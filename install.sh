@@ -2,7 +2,7 @@
 #
 #
 # This script install puppet sources
-# 
+#
 # Usage : install.sh [agent|server]
 
 PACKAGE_NAME=""
@@ -27,7 +27,7 @@ case $1 in
 esac
 
 echo "Install required packages..."
-apt-get install ca-certificates &>/dev/null
+apt-get install ca-certificates >/dev/null 2>&1
 
 [ $? -ne 0 ] && echo "Packages / Download failed" && exit 1
 
@@ -35,15 +35,15 @@ wget -P /tmp/ -q https://apt.puppetlabs.com/$FILENAME
 
 [ $? -ne 0 ] && echo "Puppetlabs / Downlaod failed" && exit 1
 
-dpkg -i --force /tmp/puppetlabs-release-pc1-jessie.deb &>/dev/null
+dpkg -i /tmp/puppetlabs-release-pc1-jessie.deb >/dev/null 2>&1
 
 [ $? -ne 0 ] && echo "Puppetlabs / Installation failed" && exit 1
 
-apt-get update &>/dev/null
+apt-get update >/dev/null 2>&1
 
 [ $? -ne 0 ] && echo "Update failed" && exit 1
 
-apt-get install $PACKAGE_NAME &>/dev/null
+apt-get install $PACKAGE_NAME >/dev/null 2>&1
 
 if [ $? -eq 0 ]; then
   echo "Successfully"
