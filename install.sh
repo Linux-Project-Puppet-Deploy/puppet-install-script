@@ -27,7 +27,7 @@ case $1 in
 esac
 
 echo "Install required packages..."
-apt-get install ca-certificates >/dev/null 2>&1
+apt-get install -y ca-certificates >/dev/null 2>&1
 
 [ $? -ne 0 ] && echo "Packages / Download failed" && exit 1
 
@@ -43,7 +43,7 @@ apt-get update >/dev/null 2>&1
 
 [ $? -ne 0 ] && echo "Update failed" && exit 1
 
-apt-get install $PACKAGE_NAME >/dev/null 2>&1
+apt-get install -y $PACKAGE_NAME >/dev/null 2>&1
 
 if [ $? -eq 0 ]; then
   echo "Successfully"
