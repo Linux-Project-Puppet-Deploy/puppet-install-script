@@ -3,19 +3,16 @@
 #
 # This script install puppet sources
 #
-# Usage : install.sh [agent|server]
+# Usage : install.sh [agent|server] [puppet_ip] [puppet_dns]
 
 PACKAGE_NAME=""
 FILENAME="puppetlabs-release-pc1-jessie.deb"
 
-if [ $# -ne 1 ]; then
-  echo "This script must be contains 1 argument [agent|server]"
-  exit 1
-fi
-
 case $1 in
  "agent")
     PACKAGE_NAME="puppet-agent"
+    [[ #? -ne 3 ]] && echo "Agent parameters are wrong" && exit 1
+    echo -e "$2\t$3" >> /etc/hosts
     ;;
   "server")
     PACKAGE_NAME="puppetserver"
@@ -46,7 +43,20 @@ apt-get update >/dev/null 2>&1
 apt-get install -y $PACKAGE_NAME >/dev/null 2>&1
 
 if [ $? -eq 0 ]; then
+  if [ $1" == "agent" ]; then
+    [[ ! -f /etc/puppetlabs/puppet/puppet.conf ]] && echo "Puppet Agent .conf not found" && exit 1
+    cat << EOF > /etc/puppetlabs/puppet/puppet.conf
+[main]
+certname = $HOSTNAME.ynov.co
+server = $3.ynov.co
+environment = production
+runinterval = 10m
+EOF
+  fi
   echo "Successfully"
+  echo "##"
+  echo "## Please run : /opt/puppetlabs/bin/puppet agent -t"
+  echo "##"
 else
   echo "$PACKAGE_NAME installation failed"
   exit 1
