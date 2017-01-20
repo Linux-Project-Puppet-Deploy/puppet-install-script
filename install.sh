@@ -11,8 +11,8 @@ FILENAME="puppetlabs-release-pc1-jessie.deb"
 case $1 in
  "agent")
     PACKAGE_NAME="puppet-agent"
-    [[ #? -ne 3 ]] && echo "Agent parameters are wrong" && exit 1
-    echo -e "$2\t$3" >> /etc/hosts
+    [ "$#" -ne 3 ] && echo "Agent parameters are wrong" && exit 1
+    echo "$2\t$3" >> /etc/hosts
     ;;
   "server")
     PACKAGE_NAME="puppetserver"
@@ -43,12 +43,12 @@ apt-get update >/dev/null 2>&1
 apt-get install -y $PACKAGE_NAME >/dev/null 2>&1
 
 if [ $? -eq 0 ]; then
-  if [ $1" == "agent" ]; then
-    [[ ! -f /etc/puppetlabs/puppet/puppet.conf ]] && echo "Puppet Agent .conf not found" && exit 1
+  if [ $1 = "agent" ]; then
+    [ ! -f /etc/puppetlabs/puppet/puppet.conf ] && echo "Puppet Agent .conf not found" && exit 1
     cat << EOF > /etc/puppetlabs/puppet/puppet.conf
 [main]
 certname = $HOSTNAME.ynov.co
-server = $3.ynov.co
+server = $3
 environment = production
 runinterval = 10m
 EOF
