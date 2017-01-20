@@ -13,7 +13,7 @@ This script install source and puppet agent or server
 
 Puppet Agent
 ```sh
-wget --no-check-certificate -qO - https://raw.githubusercontent.com/Linux-Project-Puppet-Deploy/puppet-install-script/master/install.sh | sh -s agent
+wget --no-check-certificate -qO - https://raw.githubusercontent.com/Linux-Project-Puppet-Deploy/puppet-install-script/master/install.sh | sh -s agent [puppet_id] [puppet_dns]
 ```
 
 Puppet Server
